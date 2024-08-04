@@ -1,5 +1,7 @@
 async function fetchLink() {
-  const response = await fetch("/get-link");
+  const response = await fetch(
+    "https://leetcodecontestserver.onrender.com/get-link"
+  );
   const data = await response.json();
   if (data.link) {
     const btn = document.getElementById("btn");
@@ -11,7 +13,7 @@ async function fetchLink() {
   }
 }
 
-function startCountdown() {
+async function startCountdown() {
   const now = new Date();
   const targetTime = new Date();
   targetTime.setHours(18, 0, 0, 0);
@@ -20,7 +22,7 @@ function startCountdown() {
     targetTime.setDate(targetTime.getDate() + 1);
   }
 
-  const interval = setInterval(() => {
+  const interval = setInterval(async () => {
     const currentTime = new Date().getTime();
     const distance = targetTime - currentTime;
 
@@ -36,8 +38,8 @@ function startCountdown() {
 
     if (distance < 0) {
       clearInterval(interval);
-      document.getElementById("countdown").innerHTML = "Countdown Finished";
-      fetchLink();
+      document.getElementById("countdown").style.display = "none";
+      await fetchLink();
     }
   }, 1000);
 }
